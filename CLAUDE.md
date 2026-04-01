@@ -2,7 +2,7 @@
 
 **IMPORTANT: Read `PROJECT-RULES.md` first.** It contains the shared project rules that all agents must follow.
 
-This file is auto-loaded by Claude Code and contains Claude Code-specific instructions only.
+This file is auto-loaded by Claude Code and contains Claude Code-specific instructions beyond the shared rules in PROJECT-RULES.md.
 
 Related files:
 - `PROJECT-RULES.md` — Shared project rules (domain rules, architecture, guardrails, testing, etc.)

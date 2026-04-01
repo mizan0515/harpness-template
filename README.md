@@ -89,14 +89,14 @@ your-project/
 
 ```bash
 # 템플릿 클론
-git clone https://github.com/mizan0515/harpness-template.git
+git clone https://github.com/mizan0515/harness-template.git
 
 # 파일 복사
-cp harpness-template/PROJECT-RULES.md /path/to/your-project/
-cp harpness-template/CLAUDE.md /path/to/your-project/
-cp harpness-template/CLAUDE-HARNESS.md /path/to/your-project/
-cp harpness-template/AGENTS.md /path/to/your-project/
-cp -r harpness-template/.prompts /path/to/your-project/
+cp harness-template/PROJECT-RULES.md /path/to/your-project/
+cp harness-template/CLAUDE.md /path/to/your-project/
+cp harness-template/CLAUDE-HARNESS.md /path/to/your-project/
+cp harness-template/AGENTS.md /path/to/your-project/
+cp -r harness-template/.prompts /path/to/your-project/
 ```
 
 ### 2. `.gitignore`에 추가
