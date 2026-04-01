@@ -1,157 +1,128 @@
-# Harness Template Setup Guide
+# 하네스 템플릿 설정 가이드
 
-## What This Is
+## 이게 뭔가요
 
-A reusable project template for the **Codex + Claude Code harness architecture**:
-- **Codex** = Orchestrator + Planner (plans sprints, delegates, judges)
-- **Claude Code** = Generator or Evaluator (executes bounded packets)
-- **Claude Code standalone** = Autonomous partner (when user interacts directly)
+**Codex + Claude Code 하네스 아키텍처**를 위한 범용 프로젝트 템플릿입니다:
+- **Codex** = 오케스트레이터 + 플래너 (스프린트 계획, 위임, 판정)
+- **Claude Code** = Generator 또는 Evaluator (경계된 패킷 실행)
+- **Claude Code 독립** = 자율적 파트너 (사용자가 직접 사용 시)
 
-## File Structure
+## 파일 구조
 
 ```
 your-project/
-├── CLAUDE.md              ← Claude Code auto-loads. Part 1 (shared rules) + Part 2 (standalone mode)
-├── CLAUDE-HARNESS.md      ← Codex tells Claude Code to read this. Harness rules (bounded mode)
-├── AGENTS.md              ← Codex auto-loads. Orchestrator contract
-├── .gitignore             ← Add ".prompts/" here
-└── .prompts/              ← Codex prompt pack (not committed)
+├── CLAUDE.md              ← Claude Code 자동 로드. Part 1 (공통 규칙) + Part 2 (독립 모드)
+├── CLAUDE-HARNESS.md      ← Codex가 Claude Code에 읽기 지시. 하네스 규칙 (경계 모드)
+├── AGENTS.md              ← Codex 자동 로드. 오케스트레이터 계약
+├── .gitignore             ← 여기에 ".prompts/" 추가
+└── .prompts/              ← Codex 프롬프트 팩 (커밋 안 함)
     ├── README.md
-    ├── 00-common-supplementary.md   ← Project gotchas, AI mistakes, quick reference
-    ├── 01-next-task.md              ← Main autonomous loop
-    ├── 02-consistency-audit.md      ← Doc↔code audit
-    ├── 03-full-audit.md             ← Large-scale audit
-    ├── 04-domain-checklists.md      ← Per-domain QA checklists
-    ├── 05-bug-fix.md                ← Bug trace and fix
-    ├── 06-data-schema-validation.md ← Data/schema audit
-    ├── 07-file-cleanup.md           ← Housekeeping
-    ├── 10-generator-packet.md       ← Generator template
-    ├── 11-evaluator-packet.md       ← Evaluator template
-    └── 12-session-close.md          ← Session closure template
+    ├── 00-공통-보충규칙.md
+    ├── 01-다음작업.md
+    ├── 02-정합성-감사.md
+    ├── 03-전체-감사.md
+    ├── 04-도메인-체크리스트.md
+    ├── 05-버그수정.md
+    ├── 06-데이터-스키마-검증.md
+    ├── 07-파일정리.md
+    ├── 10-generator-패킷.md
+    ├── 11-evaluator-패킷.md
+    └── 12-세션마감.md
 ```
 
-## Setup Steps
+## 설정 단계
 
-### 1. Copy files to your project root
+### 1. 프로젝트 루트에 파일 복사
 
 ```bash
 cp CLAUDE.md CLAUDE-HARNESS.md AGENTS.md /path/to/your-project/
 cp -r .prompts/ /path/to/your-project/.prompts/
 ```
 
-### 2. Add `.prompts/` to `.gitignore`
+### 2. `.gitignore`에 `.prompts/` 추가
 
 ```
-# In .gitignore
 .prompts/
 ```
 
-### 3. Fill in `{{PLACEHOLDER}}` sections
+### 3. `{{PLACEHOLDER}}` 채우기
 
-Search for `{{` across all files. Each placeholder has a comment explaining what to fill in.
+모든 파일에서 `{{`를 검색하세요. 각 플레이스홀더에 설명 주석이 있습니다.
 
-**Priority order** (fill these first):
+**우선순위** (이것부터):
 
-| File | Placeholders | Priority |
-|------|-------------|----------|
-| `CLAUDE.md` | `{{PROJECT_TYPE}}`, `{{TECH_STACK}}`, `{{CURRENT_MILESTONE}}`, `{{REPO_REALITY}}`, `{{DOMAIN_RULES}}` | Must-fill |
-| `AGENTS.md` | `{{PRIMARY_SPEC}}`, `{{CODEX_REMINDERS}}` | Must-fill |
-| `.prompts/00` | `{{REPO_GOTCHAS}}`, `{{AI_MISTAKES}}`, `{{QUICK_REFERENCE}}` | Should-fill |
-| `.prompts/01` | `{{MILESTONE_CONTEXT}}` | Should-fill |
-| `.prompts/04` | Domain checklists (uncomment relevant, delete irrelevant) | Should-fill |
-| Others | Various | Fill as needed |
+| 파일 | 플레이스홀더 | 우선도 |
+|------|-------------|--------|
+| `CLAUDE.md` | `{{PROJECT_TYPE}}`, `{{TECH_STACK}}`, `{{CURRENT_MILESTONE}}`, `{{REPO_REALITY}}`, `{{DOMAIN_RULES}}` | 필수 |
+| `AGENTS.md` | `{{PRIMARY_SPEC}}`, `{{CODEX_REMINDERS}}` | 필수 |
+| `.prompts/00` | `{{REPO_GOTCHAS}}`, `{{AI_MISTAKES}}`, `{{QUICK_REFERENCE}}` | 권장 |
+| `.prompts/01` | `{{MILESTONE_CONTEXT}}` | 권장 |
+| `.prompts/04` | 도메인 체크리스트 (해당만 주석 해제, 나머지 삭제) | 권장 |
+| 기타 | 다양 | 필요 시 |
 
-### 4. Delete unused domain examples
+### 4. 불필요한 도메인 예시 삭제
 
-`04-domain-checklists.md` contains examples for web, game, and mobile.
-Keep only what applies to your project and fill in project-specific items.
+`04-도메인-체크리스트.md`에 웹, 게임, 모바일 예시가 있습니다.
+해당 프로젝트에 맞는 것만 남기세요.
 
-### 5. Create research files
+### 5. research 파일 생성
 
-For each major source directory, create `<FolderName>-research.md`:
+주요 소스 디렉토리마다 `<폴더명>-research.md`를 만드세요:
 ```
 src/components/components-research.md
 src/lib/lib-research.md
 src/server/server-research.md
 ```
 
-### 6. Verify the loop works
+### 6. 루프 동작 확인
 
-Test the harness with a trivial task:
 ```bash
-# Codex sends a Generator packet
 claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions \
   "Read CLAUDE.md and CLAUDE-HARNESS.md first. Execute Generator Packet below.
-   Sprint: test-harness. Goal: Add a comment to README.md. In Scope: README.md. Out of Scope: everything else."
+   Sprint: test-harness. Goal: README.md에 주석 추가. In Scope: README.md. Out of Scope: 나머지 전부."
 ```
 
-If Claude Code:
-- Reads both files ✅
-- Stays in scope ✅
-- Produces structured handoff ✅
-→ Harness is working.
+Claude Code가 두 파일 읽고 → scope 내에서만 작업 → 구조화된 핸드오프 반환하면 → 하네스 정상 작동.
 
 ---
 
-## How It Works
+## 작동 원리
 
-### User directly opens Claude Code
+### 사용자가 직접 Claude Code 열 때
 ```
-User → Claude Code
-       reads CLAUDE.md automatically
-       Part 1 (shared rules) + Part 2 (standalone mode)
-       CLAUDE-HARNESS.md NOT loaded
-       → Autonomous partner, can plan and explore freely
+사용자 → Claude Code
+         CLAUDE.md 자동 로드
+         Part 1 (공통 규칙) + Part 2 (독립 모드)
+         CLAUDE-HARNESS.md 로드 안 됨
+         → 자율적 파트너, 자유롭게 계획·탐색 가능
 ```
 
-### Codex delegates to Claude Code
+### Codex가 Claude Code에 위임할 때
 ```
 Codex → CLI: "Read CLAUDE.md and CLAUDE-HARNESS.md first. Execute Generator Packet..."
-        Claude Code reads both files
-        CLAUDE.md Part 2 standalone stance overridden by CLAUDE-HARNESS.md
-        → Bounded execution, structured handoff, no scope creep
+        Claude Code 두 파일 모두 읽음
+        CLAUDE.md Part 2 독립 모드가 CLAUDE-HARNESS.md에 의해 재정의됨
+        → 경계된 실행, 구조화된 핸드오프, scope 확장 금지
 ```
 
-### Codex autonomous loop (01-next-task.md)
+### Codex 자율 루프 (01-다음작업.md)
 ```
-Codex: analyze → select task → write contract
-  → Generator packet → review
-  → Evaluator packet → verdict
-  → PASS: commit, next task (no user wait)
-  → FAIL: fix packet, retry (no user wait)
-  → FAIL 3x: stop, report to user
+Codex: 분석 → 작업 선택 → 계약 작성
+  → Generator 패킷 → 검토
+  → Evaluator 패킷 → 판정
+  → PASS: commit, 다음 작업 (사용자 대기 없음)
+  → FAIL: 수정 패킷, 재시도 (사용자 대기 없음)
+  → FAIL 3회: 정지, 사용자에게 보고
 ```
 
-## Cost Control Summary
+## 비용 통제 요약
 
-| Lever | Default | Escalation |
-|-------|---------|------------|
-| Effort | `low` | `high` for multi-file refactoring or unknown debugging only |
-| Session | fresh | continued for ≤1 file fix after immediate FAIL only |
-| Files/packet | 1-3, max 5 | Split into multiple packets if more |
-| Context | 5-10 lines | Never paste full file contents |
-| Evaluator | Always for logic changes | Skip for doc/comment/typo changes |
-| Direct edit | ≤20 lines / ≤2 files | Codex does directly, zero Claude cost |
-| Full audit | Targeted 1-2 domains | Full 8-domain only when explicitly needed |
-
-## Adapting for Your Project Type
-
-### Web (Next.js, Express, Django, etc.)
-- Verification: `npm run typecheck && npm run test && npm run lint`
-- Domain checklists: UI, API, Data, Auth, State, Config
-- Key guardrails: API route handlers delegate to services, auth middleware on protected routes
-
-### Game (Unity, Unreal, Godot, etc.)
-- Verification: Unity MCP (`refresh → console → run_tests → get_test_job`)
-- Domain checklists: Combat, Network, Map, UI, Data/Schema
-- Key guardrails: Gameplay rules not in transport/UI, state ownership boundaries
-
-### Mobile (React Native, Flutter, Swift, Kotlin)
-- Verification: `tsc --noEmit && jest && lint`
-- Domain checklists: Offline/Sync, Navigation, Push, Permissions
-- Key guardrails: Offline-first reads, navigation state preservation
-
-### Backend/API (Microservices, serverless)
-- Verification: `typecheck && test && lint && openapi-validate`
-- Domain checklists: API contract, Data, Auth, Integration, Config
-- Key guardrails: Idempotent mutations, schema-first API design
+| 레버 | 기본값 | 상향 조건 |
+|------|--------|----------|
+| Effort | `low` | `high`는 multi-file 리팩토링 또는 원인불명 디버깅만 |
+| 세션 | 새 세션 | continued는 직전 FAIL 후 ≤1파일 수정만 |
+| 파일/패킷 | 1-3개, 최대 5 | 초과 시 분할 |
+| 컨텍스트 | 5-10줄 | 전체 파일 내용 붙여넣기 금지 |
+| Evaluator | 로직 변경 시 항상 | 문서/주석/오타 변경은 생략 |
+| 직접 편집 | ≤20줄 / ≤2파일 | Codex가 직접, Claude 비용 0 |
+| 전체 감사 | 타겟 1-2 도메인 | 전체 도메인은 꼭 필요할 때만 |

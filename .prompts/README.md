@@ -1,13 +1,13 @@
-# .prompts/ — Codex Orchestrator Prompt Pack
+# .prompts/ — Codex Orchestrator 프롬프트 팩
 
-## Overview
+## 개요
 
-- All prompts in this folder are **input to Codex (Orchestrator)**.
-- Codex reads a prompt, follows the AGENTS.md harness loop, and delegates to Claude Code via bounded packets.
-- Claude Code reads `CLAUDE.md` automatically. When delegated, Codex also tells it to read `CLAUDE-HARNESS.md`.
-- This folder should be in `.gitignore` (project-internal, not shipped).
+- 이 폴더의 모든 프롬프트는 **Codex (Orchestrator)에 대한 입력**입니다.
+- Codex는 프롬프트를 읽고, AGENTS.md 하네스 루프를 따르며, 한정 packet을 통해 Claude Code에 위임합니다.
+- Claude Code는 `CLAUDE.md`를 자동으로 읽습니다. 위임 시 Codex는 `CLAUDE-HARNESS.md`도 함께 읽도록 지시합니다.
+- 이 폴더는 `.gitignore`에 포함되어야 합니다 (프로젝트 내부용, 배포 대상 아님).
 
-## Harness Structure
+## 하네스 구조
 
 ```
 Codex (Orchestrator + Planner)
@@ -22,38 +22,38 @@ Claude Code (Generator or Evaluator)
   └─ reports: handoff to Codex
 ```
 
-## File List
+## 파일 목록
 
-| File | Role | Target |
-|------|------|--------|
-| 00-common-supplementary.md | CLAUDE.md supplement — delta-only rules | Codex reference |
-| 01-next-task.md | Plan and execute next task (main loop) | Codex execution |
-| 02-consistency-audit.md | Doc↔code consistency audit and fix | Codex execution |
-| 03-full-audit.md | Large-scale full audit | Codex execution |
-| 04-domain-checklists.md | Domain-specific audit checklists | Codex reference |
-| 05-bug-fix.md | Bug reproduction and fix | Codex execution |
-| 06-data-schema-validation.md | Data asset/schema validation | Codex execution |
-| 07-file-cleanup.md | File cleanup | Codex execution |
-| 10-generator-packet.md | Generator packet template | Codex reference |
-| 11-evaluator-packet.md | Evaluator packet template | Codex reference |
-| 12-session-close.md | Session closure template | Codex reference |
+| 파일 | 역할 | 대상 |
+|------|------|------|
+| 00-공통-보충규칙.md | CLAUDE.md 보충 — 델타 전용 규칙 | Codex 참조 |
+| 01-다음작업.md | 다음 작업 계획 및 실행 (메인 루프) | Codex 실행 |
+| 02-정합성-감사.md | 문서↔코드 정합성 감사 및 수정 | Codex 실행 |
+| 03-전체-감사.md | 대규모 전체 감사 | Codex 실행 |
+| 04-도메인-체크리스트.md | 도메인별 감사 체크리스트 | Codex 참조 |
+| 05-버그수정.md | 버그 재현 및 수정 | Codex 실행 |
+| 06-데이터-스키마-검증.md | 데이터 에셋/스키마 검증 | Codex 실행 |
+| 07-파일정리.md | 파일 정리 | Codex 실행 |
+| 10-generator-패킷.md | Generator packet 템플릿 | Codex 참조 |
+| 11-evaluator-패킷.md | Evaluator packet 템플릿 | Codex 참조 |
+| 12-세션마감.md | 세션 마감 템플릿 | Codex 참조 |
 
-## Combinations
+## 조합
 
-| Situation | Prompts | Codex Action |
-|-----------|---------|-------------|
-| Autonomous implementation | 01 | Analyze → plan → Generator → Evaluator loop |
-| Consistency fix | 02 + 04 | Audit → classify → Generator fix → Evaluator verify |
-| Full audit | 03 + 04 | Inventory → domain Evaluators → fix |
-| Bug fix | 05 + 04 related domain | Define → trace → fix → verify |
-| Data validation | 06 + 04 data section | Schema/asset comparison → fix → verify |
-| File cleanup | 07 | Inventory → judge → delete → verify |
+| 상황 | 프롬프트 | Codex 행동 |
+|------|---------|-----------|
+| 자율 구현 | 01 | 분석 → 계획 → Generator → Evaluator 루프 |
+| 정합성 수정 | 02 + 04 | 감사 → 분류 → Generator 수정 → Evaluator 검증 |
+| 전체 감사 | 03 + 04 | 목록 작성 → 도메인별 Evaluator → 수정 |
+| 버그 수정 | 05 + 04 관련 도메인 | 정의 → 추적 → 수정 → 검증 |
+| 데이터 검증 | 06 + 04 데이터 섹션 | 스키마/에셋 비교 → 수정 → 검증 |
+| 파일 정리 | 07 | 목록 작성 → 판단 → 삭제 → 검증 |
 
-## Claude Code CLI Default
+## Claude Code CLI 기본값
 
 ```
 claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions "Read CLAUDE.md and CLAUDE-HARNESS.md first. Then [packet]"
 ```
 
-- Default: low effort, fresh session, 1 bounded packet
-- Approval: prefer reusable prefix approval
+- 기본값: low effort, 새 세션, 한정 packet 1개
+- 승인: 재사용 가능한 접두사 승인 우선
