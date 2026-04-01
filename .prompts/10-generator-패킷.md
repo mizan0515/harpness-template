@@ -40,7 +40,7 @@ Read PROJECT-RULES.md and CLAUDE-HARNESS.md first.
 - Files to avoid: [목록]
 - Constraints:
   - [이 작업에 해당하는 PROJECT-RULES.md 가드레일]
-  - [이 작업에 해당하는 00-common-supplementary.md 주의사항]
+  - [이 작업에 해당하는 00-공통-보충규칙.md 주의사항]
 - Domain-specific rules:
   - [이 도메인의 핵심 수치, 규칙, 또는 공식]
 - Implementation notes: [구체적 힌트, 관련 파일의 현재 상태]

@@ -37,7 +37,7 @@ Read PROJECT-RULES.md and CLAUDE-HARNESS.md first.
   - 기존 테스트 실패 → 즉시 FAIL
   - 빌드/컴파일 오류 → 즉시 FAIL
   - [도메인별 조건]
-- Domain checklist (04-domain-checklists.md 참조):
+- Domain checklist (04-도메인-체크리스트.md 참조):
   - [이 스프린트 도메인에 해당하는 체크포인트]
 - Verification checks:
   - {{VERIFICATION_STEPS}}

@@ -135,7 +135,7 @@ grep -r '{{' --include="*.md" -l
 ```bash
 claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions \
   "Read PROJECT-RULES.md and CLAUDE-HARNESS.md first. Execute Generator Packet below.
-   Sprint: test. Goal: README에 주석 추가. In Scope: README.md. Out of Scope: 나머지 전부."
+   Sprint: test-harness. Goal: README에 주석 추가. In Scope: README.md. Out of Scope: 나머지 전부."
 ```
 
 Claude Code가 두 파일 읽고 → scope 내에서만 작업 → 구조화된 핸드오프 반환하면 → 하네스 정상 작동.
