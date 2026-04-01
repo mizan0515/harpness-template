@@ -11,7 +11,8 @@
 
 ```
 your-project/
-├── CLAUDE.md              ← Claude Code 자동 로드. Part 1 (공통 규칙) + Part 2 (독립 모드)
+├── PROJECT-RULES.md       ← 공유 프로젝트 규칙 (모든 에이전트 공통)
+├── CLAUDE.md              ← Claude Code 자동 로드. 독립 모드 계약
 ├── CLAUDE-HARNESS.md      ← Codex가 Claude Code에 읽기 지시. 하네스 규칙 (경계 모드)
 ├── AGENTS.md              ← Codex 자동 로드. 오케스트레이터 계약
 ├── .gitignore             ← 여기에 ".prompts/" 추가
@@ -35,7 +36,7 @@ your-project/
 ### 1. 프로젝트 루트에 파일 복사
 
 ```bash
-cp CLAUDE.md CLAUDE-HARNESS.md AGENTS.md /path/to/your-project/
+cp PROJECT-RULES.md CLAUDE.md CLAUDE-HARNESS.md AGENTS.md /path/to/your-project/
 cp -r .prompts/ /path/to/your-project/.prompts/
 ```
 
@@ -53,7 +54,7 @@ cp -r .prompts/ /path/to/your-project/.prompts/
 
 | 파일 | 플레이스홀더 | 우선도 |
 |------|-------------|--------|
-| `CLAUDE.md` | `{{PROJECT_TYPE}}`, `{{TECH_STACK}}`, `{{CURRENT_MILESTONE}}`, `{{REPO_REALITY}}`, `{{DOMAIN_RULES}}` | 필수 |
+| `PROJECT-RULES.md` | `{{PROJECT_TYPE}}`, `{{TECH_STACK}}`, `{{CURRENT_MILESTONE}}`, `{{REPO_REALITY}}`, `{{DOMAIN_RULES}}` | 필수 |
 | `AGENTS.md` | `{{PRIMARY_SPEC}}`, `{{CODEX_REMINDERS}}` | 필수 |
 | `.prompts/00` | `{{REPO_GOTCHAS}}`, `{{AI_MISTAKES}}`, `{{QUICK_REFERENCE}}` | 권장 |
 | `.prompts/01` | `{{MILESTONE_CONTEXT}}` | 권장 |
@@ -78,7 +79,7 @@ src/server/server-research.md
 
 ```bash
 claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions \
-  "Read CLAUDE.md and CLAUDE-HARNESS.md first. Execute Generator Packet below.
+  "Read PROJECT-RULES.md and CLAUDE-HARNESS.md first. Execute Generator Packet below.
    Sprint: test-harness. Goal: README.md에 주석 추가. In Scope: README.md. Out of Scope: 나머지 전부."
 ```
 
@@ -91,17 +92,16 @@ Claude Code가 두 파일 읽고 → scope 내에서만 작업 → 구조화된 
 ### 사용자가 직접 Claude Code 열 때
 ```
 사용자 → Claude Code
-         CLAUDE.md 자동 로드
-         Part 1 (공통 규칙) + Part 2 (독립 모드)
+         CLAUDE.md 자동 로드 → PROJECT-RULES.md 읽기 지시
          CLAUDE-HARNESS.md 로드 안 됨
          → 자율적 파트너, 자유롭게 계획·탐색 가능
 ```
 
 ### Codex가 Claude Code에 위임할 때
 ```
-Codex → CLI: "Read CLAUDE.md and CLAUDE-HARNESS.md first. Execute Generator Packet..."
-        Claude Code 두 파일 모두 읽음
-        CLAUDE.md Part 2 독립 모드가 CLAUDE-HARNESS.md에 의해 재정의됨
+Codex → CLI: "Read PROJECT-RULES.md and CLAUDE-HARNESS.md first. Execute Generator Packet..."
+        Claude Code: CLAUDE.md(자동) + PROJECT-RULES.md + CLAUDE-HARNESS.md 로드
+        독립 모드가 CLAUDE-HARNESS.md에 의해 재정의됨
         → 경계된 실행, 구조화된 핸드오프, scope 확장 금지
 ```
 

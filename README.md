@@ -19,7 +19,7 @@ AI 에이전트가 코드 작업할 때 세 가지가 잘못됩니다:
 ```
 ┌─────────────────────────────────────────┐
 │  Codex (오케스트레이터 + 플래너)           │
-│  읽기: AGENTS.md + CLAUDE.md Part 1      │
+│  읽기: AGENTS.md + PROJECT-RULES.md      │
 │  ├─ 저장소 상태 분석                       │
 │  ├─ 다음 작업 선택                         │
 │  ├─ 스프린트 계약 작성                     │
@@ -31,7 +31,8 @@ AI 에이전트가 코드 작업할 때 세 가지가 잘못됩니다:
              │           │
 ┌────────────▼───────────▼────────────────┐
 │  Claude Code (Generator 또는 Evaluator)  │
-│  읽기: CLAUDE.md + CLAUDE-HARNESS.md     │
+│  읽기: CLAUDE.md(자동) + PROJECT-RULES.md │
+│        + CLAUDE-HARNESS.md               │
 │  ├─ 패킷 1개만 실행                       │
 │  ├─ scope 내에서만 작업                    │
 │  └─ 구조화된 핸드오프 반환                  │
@@ -40,7 +41,7 @@ AI 에이전트가 코드 작업할 때 세 가지가 잘못됩니다:
   사용자가 직접 사용할 때 (Codex 없이):
 ┌─────────────────────────────────────────┐
 │  Claude Code (독립 모드)                  │
-│  읽기: CLAUDE.md만                        │
+│  읽기: CLAUDE.md(자동) + PROJECT-RULES.md │
 │  ├─ 자율적 프로젝트 파트너                  │
 │  ├─ 자유로운 계획, 탐색, 제안               │
 │  └─ 사용자가 의사결정자                     │
@@ -51,7 +52,7 @@ AI 에이전트가 코드 작업할 때 세 가지가 잘못됩니다:
 
 | 결정 | 이유 |
 |------|------|
-| **파일 분리** (`CLAUDE.md` vs `CLAUDE-HARNESS.md`) | 독립 모드에서 하네스 규칙 미로드 → 토큰 낭비 제로, 역할 혼동 없음 |
+| **파일 분리** (`PROJECT-RULES.md` + `CLAUDE.md` + `CLAUDE-HARNESS.md`) | 공유 규칙, 독립 모드, 하네스 모드 각각 독립 파일 → 토큰 낭비 제로, 역할 혼동 없음 |
 | **`low` effort 기본** | 90%+ 작업이 깊은 추론 불필요. 비용 절약. |
 | **패킷당 새 세션** | 누적 컨텍스트 토큰 비용 차단 |
 | **패킷당 1-3 파일** | 각 호출을 작고 예측 가능하고 검토 가능하게 유지 |
@@ -63,7 +64,8 @@ AI 에이전트가 코드 작업할 때 세 가지가 잘못됩니다:
 
 ```
 your-project/
-├── CLAUDE.md              ← Claude Code 자동 로드 (공통 규칙 + 독립 모드)
+├── PROJECT-RULES.md       ← 공유 프로젝트 규칙 (모든 에이전트 공통)
+├── CLAUDE.md              ← Claude Code 자동 로드 (독립 모드 계약)
 ├── CLAUDE-HARNESS.md      ← Codex 위임 시만 로드 (하네스 모드)
 ├── AGENTS.md              ← Codex 자동 로드 (오케스트레이터 계약)
 └── .prompts/              ← Codex 프롬프트 팩 (.gitignore 대상)
@@ -90,6 +92,7 @@ your-project/
 git clone https://github.com/mizan0515/harpness-template.git
 
 # 파일 복사
+cp harpness-template/PROJECT-RULES.md /path/to/your-project/
 cp harpness-template/CLAUDE.md /path/to/your-project/
 cp harpness-template/CLAUDE-HARNESS.md /path/to/your-project/
 cp harpness-template/AGENTS.md /path/to/your-project/
@@ -114,13 +117,13 @@ grep -r '{{' --include="*.md" -l
 
 | 플레이스홀더 | 위치 | 예시 |
 |-------------|------|------|
-| `{{PROJECT_TYPE}}` | CLAUDE.md | "Next.js SaaS 대시보드" |
-| `{{TECH_STACK}}` | CLAUDE.md | "Next.js 14, tRPC, Prisma, PostgreSQL" |
-| `{{CURRENT_MILESTONE}}` | CLAUDE.md, prompts | "MVP 출시" |
-| `{{REPO_REALITY}}` | CLAUDE.md | 실제 존재하는 것 5-15줄 |
-| `{{DOMAIN_RULES}}` | CLAUDE.md | 에이전트가 깨면 안 되는 불변 규칙 5-15개 |
+| `{{PROJECT_TYPE}}` | PROJECT-RULES.md | "Next.js SaaS 대시보드" |
+| `{{TECH_STACK}}` | PROJECT-RULES.md | "Next.js 14, tRPC, Prisma, PostgreSQL" |
+| `{{CURRENT_MILESTONE}}` | PROJECT-RULES.md, prompts | "MVP 출시" |
+| `{{REPO_REALITY}}` | PROJECT-RULES.md | 실제 존재하는 것 5-15줄 |
+| `{{DOMAIN_RULES}}` | PROJECT-RULES.md | 에이전트가 깨면 안 되는 불변 규칙 5-15개 |
 | `{{VERIFICATION_COMMAND}}` | CLAUDE.md | "`npm run typecheck && npm test`" |
-| `{{PRIMARY_SPEC}}` | CLAUDE.md, AGENTS.md | "`docs/product-spec.md`" |
+| `{{PRIMARY_SPEC}}` | PROJECT-RULES.md, AGENTS.md | "`docs/product-spec.md`" |
 
 ### 4. 도메인 체크리스트 커스터마이즈
 
@@ -131,7 +134,7 @@ grep -r '{{' --include="*.md" -l
 
 ```bash
 claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions \
-  "Read CLAUDE.md and CLAUDE-HARNESS.md first. Execute Generator Packet below.
+  "Read PROJECT-RULES.md and CLAUDE-HARNESS.md first. Execute Generator Packet below.
    Sprint: test. Goal: README에 주석 추가. In Scope: README.md. Out of Scope: 나머지 전부."
 ```
 

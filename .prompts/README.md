@@ -4,20 +4,20 @@
 
 - 이 폴더의 모든 프롬프트는 **Codex (Orchestrator)에 대한 입력**입니다.
 - Codex는 프롬프트를 읽고, AGENTS.md 하네스 루프를 따르며, 한정 packet을 통해 Claude Code에 위임합니다.
-- Claude Code는 `CLAUDE.md`를 자동으로 읽습니다. 위임 시 Codex는 `CLAUDE-HARNESS.md`도 함께 읽도록 지시합니다.
+- Claude Code는 `CLAUDE.md`를 자동으로 읽고, `PROJECT-RULES.md`를 먼저 읽도록 지시받습니다. 위임 시 Codex는 `CLAUDE-HARNESS.md`도 함께 읽도록 지시합니다.
 - 이 폴더는 `.gitignore`에 포함되어야 합니다 (프로젝트 내부용, 배포 대상 아님).
 
 ## 하네스 구조
 
 ```
 Codex (Orchestrator + Planner)
-  ├─ reads: AGENTS.md + CLAUDE.md Part 1 + .prompts/
+  ├─ reads: AGENTS.md + PROJECT-RULES.md + .prompts/
   ├─ plans: sprint contract
   ├─ delegates: bounded packets to Claude Code
   └─ judges: accept / revise / reject
 
 Claude Code (Generator or Evaluator)
-  ├─ reads: CLAUDE.md (standalone) + CLAUDE-HARNESS.md (when delegated)
+  ├─ reads: CLAUDE.md (auto) + PROJECT-RULES.md + CLAUDE-HARNESS.md (when delegated)
   ├─ executes: one bounded packet per session
   └─ reports: handoff to Codex
 ```
@@ -26,7 +26,7 @@ Claude Code (Generator or Evaluator)
 
 | 파일 | 역할 | 대상 |
 |------|------|------|
-| 00-공통-보충규칙.md | CLAUDE.md 보충 — 델타 전용 규칙 | Codex 참조 |
+| 00-공통-보충규칙.md | PROJECT-RULES.md 보충 — 델타 전용 규칙 | Codex 참조 |
 | 01-다음작업.md | 다음 작업 계획 및 실행 (메인 루프) | Codex 실행 |
 | 02-정합성-감사.md | 문서↔코드 정합성 감사 및 수정 | Codex 실행 |
 | 03-전체-감사.md | 대규모 전체 감사 | Codex 실행 |
@@ -52,7 +52,7 @@ Claude Code (Generator or Evaluator)
 ## Claude Code CLI 기본값
 
 ```
-claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions "Read CLAUDE.md and CLAUDE-HARNESS.md first. Then [packet]"
+claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions "Read PROJECT-RULES.md and CLAUDE-HARNESS.md first. Then [packet]"
 ```
 
 - 기본값: low effort, 새 세션, 한정 packet 1개

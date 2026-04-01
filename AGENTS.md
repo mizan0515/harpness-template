@@ -2,17 +2,9 @@
 
 This file is the orchestration contract for Codex in this repository.
 
-For shared project rules, read **`CLAUDE.md` Part 1 (Shared Project Rules) only**. Skip Part 2 (Claude Code Contract) — that section is for Claude Code and must not be applied to Codex.
+For shared project rules, read **`PROJECT-RULES.md`**. Do not read `CLAUDE.md` — that file contains Claude Code-specific instructions only.
 
 This file contains only Codex-specific operating procedures.
-
-## Source Of Truth
-
-Same priority as `CLAUDE.md`:
-1. {{PRIMARY_SPEC}}
-2. {{SECONDARY_SPEC}}
-3. {{TERTIARY_SPEC}}
-4. The relevant feature spec
 
 ## Why A Harness
 
@@ -82,7 +74,7 @@ Delegate when:
 
 - Prefer non-interactive `claude -p` usage so prompts and outputs remain inspectable.
 - Keep a stable invocation prefix so approvals can be reused. Default shape:
-  - `claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions "Read CLAUDE.md and CLAUDE-HARNESS.md first. ..."`
+  - `claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions "Read PROJECT-RULES.md and CLAUDE-HARNESS.md first. ..."`
 - If an approval dialog appears, prefer reusable prefix approval over one-off session approval.
 - If sandboxed execution fails on Windows with `EPERM`, rerun with escalated permissions rather than assuming Claude is broken.
 

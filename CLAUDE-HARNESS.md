@@ -1,11 +1,11 @@
 # Claude Code Harness Contract — Codex Delegate Mode
 
 **This file is read only when Codex explicitly instructs Claude Code to read it.**
-If you are reading this without a Codex packet, ignore this file and follow CLAUDE.md only.
+If you are reading this without a Codex packet, ignore this file and follow `CLAUDE.md` only.
 
 Codex CLI invocation that activates this file:
 ```
-claude ... "Read CLAUDE.md and CLAUDE-HARNESS.md first. Then execute the [Generator/Evaluator] Packet below. ..."
+claude ... "Read PROJECT-RULES.md and CLAUDE-HARNESS.md first. Then execute the [Generator/Evaluator] Packet below. ..."
 ```
 
 ---

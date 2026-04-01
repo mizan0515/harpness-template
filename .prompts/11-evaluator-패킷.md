@@ -8,7 +8,7 @@ Claude Code에 직접 전달되는 것이 아닙니다.
 ## 기본 CLI 형태
 
 ```
-claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions "Read CLAUDE.md and CLAUDE-HARNESS.md first. [packet]"
+claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions "Read PROJECT-RULES.md and CLAUDE-HARNESS.md first. [packet]"
 ```
 
 옵션은 10-generator-패킷.md와 동일.
@@ -18,7 +18,7 @@ claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode byp
 ## Packet 구조
 
 ```
-Read CLAUDE.md and CLAUDE-HARNESS.md first.
+Read PROJECT-RULES.md and CLAUDE-HARNESS.md first.
 
 ## Context (현재 상태 5-10줄)
 [Codex가 현재 상태의 간략한 요약을 작성]

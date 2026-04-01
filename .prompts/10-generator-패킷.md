@@ -8,7 +8,7 @@ Claude Code에 직접 전달되는 것이 아닙니다.
 ## 기본 CLI 형태
 
 ```
-claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions "Read CLAUDE.md and CLAUDE-HARNESS.md first. [packet]"
+claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode bypassPermissions "Read PROJECT-RULES.md and CLAUDE-HARNESS.md first. [packet]"
 ```
 
 - effort `low` 기본. `high`는 다중 파일 아키텍처 리팩터링 또는 원인 불명의 디버깅 시에만 사용.
@@ -23,7 +23,7 @@ claude --model claude-opus-4-6 --effort low -p --add-dir . --permission-mode byp
 ## 새 세션 packet 구조
 
 ```
-Read CLAUDE.md and CLAUDE-HARNESS.md first.
+Read PROJECT-RULES.md and CLAUDE-HARNESS.md first.
 
 ## Context (현재 상태 5-10줄)
 [Codex가 현재 저장소 상태의 간략한 요약을 작성]
@@ -39,7 +39,7 @@ Read CLAUDE.md and CLAUDE-HARNESS.md first.
 - Files allowed to modify: [목록]
 - Files to avoid: [목록]
 - Constraints:
-  - [이 작업에 해당하는 CLAUDE.md 가드레일]
+  - [이 작업에 해당하는 PROJECT-RULES.md 가드레일]
   - [이 작업에 해당하는 00-common-supplementary.md 주의사항]
 - Domain-specific rules:
   - [이 도메인의 핵심 수치, 규칙, 또는 공식]
